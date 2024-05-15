@@ -3,6 +3,7 @@
 #include "../include/numbers.h"
 #include "../include/engine.h"
 #include "../include/behaviour.h"
+#include "../include/snake.h"
 
 const int SNAKE_UP = 0;
 const int SNAKE_DOWN = 1;
@@ -22,36 +23,47 @@ int main() {
     int snakeY = y / 2; 
 
     int snakeDirection = SNAKE_UP;
+    int snakeLength = 0;
+
+    int snakeSteps = 0;
+    struct snakePosition snakePositions[2048];
+
+    int cherryX = rand() % x;
+    int cherryY = rand() % y;
 
     while (1) {
 
+        struct snakePosition snakePos;
+        snakePos.x = snakeX;
+        snakePos.y = snakeY;
+
+        snakePositions[snakeSteps] = snakePos;
+
+        showCherry(cherryX, cherryY);
+        showSnake(snakeLength, snakePositions, snakeSteps);
+
+        if (snakeX == cherryX && snakeY == cherryY) {
+            snakeLength++;
+            cherryX = rand() % x;
+            cherryY = rand() % y;
+        }
+
         int pressedKey = getPressedkey();
 
-        switch(pressedKey) {
-
-            case 'w':
-                snakeDirection = SNAKE_UP;
-                break;
-
-            case 's':
-                snakeDirection = SNAKE_DOWN;
-                break;
-
-            case 'a':
-                snakeDirection = SNAKE_LEFT;
-                break;
-
-            case 'd':
-                snakeDirection = SNAKE_RIGHT;
-                break;
-
-            default:
-                break;
-
+        if (pressedKey == 'w' && snakeDirection != SNAKE_DOWN) {
+            snakeDirection = SNAKE_UP;
+        }
+        else if (pressedKey == 's' && snakeDirection != SNAKE_UP) {
+            snakeDirection = SNAKE_DOWN;
+        }
+        else if (pressedKey == 'a' && snakeDirection != SNAKE_RIGHT) {
+            snakeDirection = SNAKE_LEFT;
+        }
+        else if (pressedKey == 'd' && snakeDirection != SNAKE_LEFT) {
+            snakeDirection = SNAKE_RIGHT;
         }
 
         switch(snakeDirection) {
-
             case SNAKE_UP:
                 snakeY--;
                 break;
@@ -70,6 +82,7 @@ int main() {
         }
 
         movePosition(snakeX, snakeY);
+        snakeSteps++;
 
         nextGameTick();
 
