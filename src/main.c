@@ -26,12 +26,14 @@ int main() {
     int snakeLength = 0;
 
     int snakeSteps = 0;
-    struct snakePosition snakePositions[2048];
+    struct snakePosition snakePositions[10000];
 
-    int cherryX = rand() % x;
-    int cherryY = rand() % y;
+    int cherryX = rand() % (x - 1) + 1;
+    int cherryY = rand() % (y - 1) + 1;
 
-    while (1) {
+    int gameOver = 0;
+
+    while (!gameOver) {
 
         struct snakePosition snakePos;
         snakePos.x = snakeX;
@@ -44,8 +46,12 @@ int main() {
 
         if (snakeX == cherryX && snakeY == cherryY) {
             snakeLength++;
-            cherryX = rand() % x;
-            cherryY = rand() % y;
+            cherryX = rand() % (x - 1) + 1;
+            cherryY = rand() % (y - 1) + 1;
+        }
+
+        if (snakeCrossedBorder(snakeX, snakeY, x, y) || snakeCollided(snakeX, snakeY, snakePositions, snakeLength, snakeSteps)) {
+            gameOver = 1;
         }
 
         int pressedKey = getPressedkey();
