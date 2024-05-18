@@ -94,7 +94,7 @@ int main() {
 
     }
 
-    disableCanonMode();
+    deInitializeEngine();
 
     return 0;
 }

@@ -86,6 +86,13 @@ void initializeEngine() {
 
 }
 
+void deInitializeEngine() {
+
+    disableCanonMode();
+    endAlternateScreen();
+
+}
+
 int getPressedkey() {
 
     fd_set rfds;

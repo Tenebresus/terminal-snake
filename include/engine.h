@@ -24,3 +24,5 @@ void nextGameTick();
 int getPressedkey();
 
 void initializeEngine();
+
+void deInitializeEngine();
